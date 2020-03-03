@@ -153,22 +153,25 @@ if index(g:bundle_group, 'enhanced') >= 0
 	Plug 'terryma/vim-expand-region'
 
 	" 快速文件搜索
-	Plug 'junegunn/fzf'
+	" Plug 'junegunn/fzf'
 
 	" 给不同语言提供字典补全，插入模式下 c-x c-k 触发
 	Plug 'asins/vim-dict'
 
 	" 使用 :FlyGrep 命令进行实时 grep
-	Plug 'wsdjeg/FlyGrep.vim'
+	" Plug 'wsdjeg/FlyGrep.vim'
 
 	" 使用 :CtrlSF 命令进行模仿 sublime 的 grep
-	Plug 'dyng/ctrlsf.vim'
+	" Plug 'dyng/ctrlsf.vim'
 
 	" 配对括号和引号自动补全
 	Plug 'Raimondi/delimitMate'
 
 	" 提供 gist 接口
-	Plug 'lambdalisue/vim-gista', { 'on': 'Gista' }
+	" Plug 'lambdalisue/vim-gista', { 'on': 'Gista' }
+
+	" me: visually display indent level
+	Plug 'nathanaelkane/vim-indent-guides'
 	
 	" ALT_+/- 用于按分隔符扩大缩小 v 选区
 	map <m-=> <Plug>(expand_region_expand)
@@ -273,7 +276,7 @@ if index(g:bundle_group, 'filetypes') >= 0
 	Plug 'vim-python/python-syntax', { 'for': ['python'] }
 
 	" rust 语法增强
-	Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+	" Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 
 	" vim org-mode 
 	Plug 'jceb/vim-orgmode', { 'for': 'org' }

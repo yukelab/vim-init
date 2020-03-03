@@ -44,7 +44,7 @@ set splitright
 "----------------------------------------------------------------------
 
 " 设置黑色背景
-set background=dark
+set background=desert
 
 " 允许 256 色
 set t_Co=256
