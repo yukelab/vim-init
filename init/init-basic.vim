@@ -149,6 +149,7 @@ endif
 " Tmux key timeout
 "----------------------------------------------------------------------
 if $TMUX != ''
+	set clipboard=unnamedplus
 	set ttimeoutlen=20
 elseif &ttimeoutlen > 60 || &ttimeoutlen <= 0
 	set ttimeoutlen=60
