@@ -139,8 +139,8 @@ if index(g:bundle_group, 'basic') >= 0
 
 	" git 仓库使用 histogram 算法进行 diff
 	let g:signify_vcs_cmds = {
-			\ 'git': 'git diff --no-color --diff-algorithm=histogram --no-ext-diff -U0 -- %f',
-			\}
+				\ 'git': 'git diff --no-color --diff-algorithm=histogram --no-ext-diff -U0 -- %f',
+				\}
 endif
 
 
@@ -181,6 +181,22 @@ if index(g:bundle_group, 'enhanced') >= 0
 	let g:indent_guides_space_guides = 1
 	let g:indent_guides_tab_guides = 0
 	let g:indent_guides_guide_size=1
+
+	"me: doxgen
+	Plug 'vim-scripts/DoxygenToolkit.vim'
+
+	let g:DoxgenToolkit_commentType='C'
+	let g:DoxygenToolkit_briefTag_funcName = "yes"
+
+	" for C style, change the '@' to '\'
+	let g:DoxygenToolkit_briefTag_pre = "\\brief "
+	let g:DoxygenToolkit_templateParamTag_pre = "\\tparam "
+	let g:DoxygenToolkit_paramTag_pre = "\\param "
+	let g:DoxygenToolkit_returnTag = "\\return "
+	let g:DoxygenToolkit_fileTag = "\\file "
+	let g:DoxygenToolkit_dateTag = "\\date "
+	let g:DoxygenToolkit_authorTag = "\\author "
+	let g:doxygen_enhanced_color = 1
 
 endif
 
@@ -325,6 +341,9 @@ if index(g:bundle_group, 'nerdtree') >= 0
 	noremap <space>no :NERDTreeFocus<cr>
 	noremap <space>nm :NERDTreeMirror<cr>
 	noremap <space>nt :NERDTreeToggle<cr>
+
+	"只剩 NERDTree时自动关闭
+	autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 endif
 
 
@@ -421,6 +440,12 @@ if index(g:bundle_group, 'echodoc') >= 0
 	let g:echodoc#enable_at_startup = 1
 endif
 
+"----------------------------------------------------------------------
+" zeavim：让Vim 整合使用Zeal 的套件
+"----------------------------------------------------------------------
+if index(g:bundle_group, 'zeavim') >= 0
+	Plug 'KabbAmine/zeavim.vim'
+endif
 
 "----------------------------------------------------------------------
 " LeaderF：CtrlP / FZF 的超级代替者，文件模糊匹配，tags/函数名 选择
@@ -486,13 +511,13 @@ if index(g:bundle_group, 'leaderf') >= 0
 
 		" 使用 ESC 键可以直接退出 leaderf 的 normal 模式
 		let g:Lf_NormalMap = {
-				\ "File":   [["<ESC>", ':exec g:Lf_py "fileExplManager.quit()"<CR>']],
-				\ "Buffer": [["<ESC>", ':exec g:Lf_py "bufExplManager.quit()"<cr>']],
-				\ "Mru": [["<ESC>", ':exec g:Lf_py "mruExplManager.quit()"<cr>']],
-				\ "Tag": [["<ESC>", ':exec g:Lf_py "tagExplManager.quit()"<cr>']],
-				\ "BufTag": [["<ESC>", ':exec g:Lf_py "bufTagExplManager.quit()"<cr>']],
-				\ "Function": [["<ESC>", ':exec g:Lf_py "functionExplManager.quit()"<cr>']],
-				\ }
+					\ "File":   [["<ESC>", ':exec g:Lf_py "fileExplManager.quit()"<CR>']],
+					\ "Buffer": [["<ESC>", ':exec g:Lf_py "bufExplManager.quit()"<cr>']],
+					\ "Mru": [["<ESC>", ':exec g:Lf_py "mruExplManager.quit()"<cr>']],
+					\ "Tag": [["<ESC>", ':exec g:Lf_py "tagExplManager.quit()"<cr>']],
+					\ "BufTag": [["<ESC>", ':exec g:Lf_py "bufTagExplManager.quit()"<cr>']],
+					\ "Function": [["<ESC>", ':exec g:Lf_py "functionExplManager.quit()"<cr>']],
+					\ }
 
 		" using gutentags and gutentags_plus instead of leaderf function jump
 		" should use `Leaderf gtags --update` first
@@ -515,10 +540,10 @@ if index(g:bundle_group, 'leaderf') >= 0
 
 		" 模糊匹配忽略
 		let g:ctrlp_custom_ignore = {
-		  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-		  " \ 'file': '\v\.(exe|so|dll|mp3|wav|sdf|suo|mht)$',
-		  \ 'link': 'some_bad_symbolic_links',
-		  \ }
+					\ 'dir':  '\v[\/]\.(git|hg|svn)$',
+		" \ 'file': '\v\.(exe|so|dll|mp3|wav|sdf|suo|mht)$',
+					\ 'link': 'some_bad_symbolic_links',
+					\ }
 
 		" 项目标志
 		let g:ctrlp_root_markers = ['.project', '.root', '.svn', '.git']
