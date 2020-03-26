@@ -246,6 +246,9 @@ if index(g:bundle_group, 'tags') >= 0
 
 	" 禁止 gutentags 自动链接 gtags 数据库
 	let g:gutentags_auto_add_gtags_cscope = 0
+
+	Plug 'majutsushi/tagbar'
+
 endif
 
 
@@ -319,6 +322,7 @@ if index(g:bundle_group, 'airline') >= 0
 	let g:airline_exclude_preview = 1
 	let g:airline_section_b = '%n'
 	let g:airline_theme='tomorrow'
+	let g:airline#extensions#tarbar#enabled = 1
 	let g:airline#extensions#branch#enabled = 0
 	let g:airline#extensions#syntastic#enabled = 0
 	let g:airline#extensions#fugitiveline#enabled = 0
