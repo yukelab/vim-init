@@ -1,6 +1,6 @@
 "======================================================================
 "
-" init-plugins.vim - 
+" init-plugins.vim -
 "
 " Created by skywind on 2018/05/31
 " Last Modified: 2018/06/10 23:11
@@ -38,7 +38,7 @@ call plug#begin(get(g:, 'bundle_home', '~/.vim/bundles'))
 
 
 "----------------------------------------------------------------------
-" 默认插件 
+" 默认插件
 "----------------------------------------------------------------------
 
 " 全文快速移动，<leader><leader>f{char} 即可触发
@@ -152,6 +152,10 @@ if index(g:bundle_group, 'enhanced') >= 0
 	" 用 v 选中一个区域后，ALT_+/- 按分隔符扩大/缩小选区
 	Plug 'terryma/vim-expand-region'
 
+	" ALT_+/- 用于按分隔符扩大缩小 v 选区
+	map <m-=> <Plug>(expand_region_expand)
+	map <m--> <Plug>(expand_region_shrink)
+
 	" 快速文件搜索
 	" Plug 'junegunn/fzf'
 
@@ -172,10 +176,12 @@ if index(g:bundle_group, 'enhanced') >= 0
 
 	" me: visually display indent level
 	Plug 'nathanaelkane/vim-indent-guides'
+	let g:indent_guides_enable_on_vim_startup = 1
+	let g:indent_guides_start_level = 1
+	let g:indent_guides_space_guides = 1
+	let g:indent_guides_tab_guides = 0
+	let g:indent_guides_guide_size=1
 
-	" ALT_+/- 用于按分隔符扩大缩小 v 选区
-	map <m-=> <Plug>(expand_region_expand)
-	map <m--> <Plug>(expand_region_shrink)
 endif
 
 
@@ -201,7 +207,7 @@ if index(g:bundle_group, 'tags') >= 0
 	let g:gutentags_cache_dir = expand('~/.cache/tags')
 
 	" 默认禁用自动生成
-	let g:gutentags_modules = [] 
+	let g:gutentags_modules = []
 
 	" 如果有 ctags 可执行就允许动态生成 ctags 文件
 	if executable('ctags')
@@ -278,7 +284,7 @@ if index(g:bundle_group, 'filetypes') >= 0
 	" rust 语法增强
 	" Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 
-	" vim org-mode 
+	" vim org-mode
 	Plug 'jceb/vim-orgmode', { 'for': 'org' }
 endif
 
@@ -366,13 +372,13 @@ if index(g:bundle_group, 'ale') >= 0
 
 	" 编辑不同文件类型需要的语法检查器
 	let g:ale_linters = {
-				\ 'c': ['gcc', 'cppcheck'], 
-				\ 'cpp': ['gcc', 'cppcheck'], 
-				\ 'python': ['flake8', 'pylint'], 
-				\ 'lua': ['luac'], 
+				\ 'c': ['gcc', 'cppcheck'],
+				\ 'cpp': ['gcc', 'cppcheck'],
+				\ 'python': ['flake8', 'pylint'],
+				\ 'lua': ['luac'],
 				\ 'go': ['go build', 'gofmt'],
 				\ 'java': ['javac'],
-				\ 'javascript': ['eslint'], 
+				\ 'javascript': ['eslint'],
 				\ }
 
 
@@ -488,14 +494,15 @@ if index(g:bundle_group, 'leaderf') >= 0
 				\ "Function": [["<ESC>", ':exec g:Lf_py "functionExplManager.quit()"<cr>']],
 				\ }
 
+		" using gutentags and gutentags_plus instead of leaderf function jump
 		" should use `Leaderf gtags --update` first
-		let g:Lf_GtagsAutoGenerate = 0
-		let g:Lf_Gtagslabel = 'native-pygments'
-		noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
-		noremap <leader>fd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
-		noremap <leader>fo :<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>
-		noremap <leader>fn :<C-U><C-R>=printf("Leaderf gtags --next %s", "")<CR><CR>
-		noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
+		" let g:Lf_GtagsAutoGenerate = 0
+		" let g:Lf_Gtagslabel = 'native-pygments'
+		" noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
+		" noremap <leader>fd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
+		" noremap <leader>fo :<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>
+		" noremap <leader>fn :<C-U><C-R>=printf("Leaderf gtags --next %s", "")<CR><CR>
+		" noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
 	else
 		" 不支持 python ，使用 CtrlP 代替
 		Plug 'ctrlpvim/ctrlp.vim'
@@ -567,9 +574,9 @@ let g:ycm_semantic_triggers =  {
 "----------------------------------------------------------------------
 " Ycm 白名单（非名单内文件不启用 YCM），避免打开个 1MB 的 txt 分析半天
 "----------------------------------------------------------------------
-let g:ycm_filetype_whitelist = { 
+let g:ycm_filetype_whitelist = {
 			\ "c":1,
-			\ "cpp":1, 
+			\ "cpp":1,
 			\ "objc":1,
 			\ "objcpp":1,
 			\ "python":1,

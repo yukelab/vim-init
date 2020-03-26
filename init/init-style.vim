@@ -18,6 +18,14 @@ set laststatus=2
 
 " 总是显示行号
 set number
+augroup relative_numbser
+	autocmd!
+	autocmd InsertEnter * :set norelativenumber
+	autocmd InsertLeave * :set relativenumber
+augroup END
+
+" 高亮光标所在行
+set cursorline
 
 " 总是显示侧边栏（用于显示 mark/gitdiff/诊断信息）
 set signcolumn=yes
@@ -58,6 +66,9 @@ color desert
 " color paradox
 " color solarized
 
+set colorcolumn=80
+hi ColorColumn ctermbg=darkgrey
+hi CursorLine ctermbg=darkgrey
 
 "----------------------------------------------------------------------
 " 状态栏设置
