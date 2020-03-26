@@ -25,6 +25,7 @@ set noet
 " 如果后面设置了 expandtab 那么展开 tab 为多少字符
 set softtabstop=4
 
+autocmd FileType c,h,cpp set shiftwidth=4 | set expandtab
 
 augroup PythonTab
 	au!
