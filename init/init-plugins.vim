@@ -49,7 +49,19 @@ Plug 'justinmk/vim-dirvish'
 
 " 表格对齐，使用命令 Tabularize
 Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
-
+nnoremap gb= :Tabularize /=<CR>
+vnoremap gb= :Tabularize /=<CR>
+nnoremap gb/ :Tabularize /\/\//l4c1<CR>
+vnoremap gb/ :Tabularize /\/\//l4c1<CR>
+nnoremap gb, :Tabularize /,/r0l1<CR>
+vnoremap gb, :Tabularize /,/r0l1<CR>
+nnoremap gbl :Tabularize /\|<cr>
+vnoremap gbl :Tabularize /\|<cr>
+nnoremap gbc :Tabularize /#/l4c1<cr>
+nnoremap gb<bar> :Tabularize /\|<cr>
+vnoremap gb<bar> :Tabularize /\|<cr>
+nnoremap gbr :Tabularize /\|/r0<cr>
+vnoremap gbr :Tabularize /\|/r0<cr>
 " Diff 增强，支持 histogram / patience 等更科学的 diff 算法
 Plug 'chrisbra/vim-diff-enhanced'
 
@@ -248,6 +260,7 @@ if index(g:bundle_group, 'tags') >= 0
 	let g:gutentags_auto_add_gtags_cscope = 0
 
 	Plug 'majutsushi/tagbar'
+	noremap <space>tt :TagbarToggle<cr>
 
 endif
 
@@ -341,10 +354,11 @@ if index(g:bundle_group, 'nerdtree') >= 0
 	let g:NERDTreeMinimalUI = 1
 	let g:NERDTreeDirArrows = 1
 	let g:NERDTreeHijackNetrw = 0
-	noremap <space>nn :NERDTree<cr>
-	noremap <space>no :NERDTreeFocus<cr>
-	noremap <space>nm :NERDTreeMirror<cr>
-	noremap <space>nt :NERDTreeToggle<cr>
+
+	noremap <space>tn :NERDTree<cr>
+	noremap <space>to :NERDTreeFocus<cr>
+	noremap <space>tm :NERDTreeMirror<cr>
+	noremap <space>tt :NERDTreeToggle<cr>
 
 	"只剩 NERDTree时自动关闭
 	autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
@@ -567,6 +581,177 @@ if index(g:bundle_group, 'leaderf') >= 0
 	endif
 endif
 
+"----------------------------------------------------------------------
+" asyncrun：CtrlP / FZF 的超级代替者，文件模糊匹配，tags/函数名 选择
+"----------------------------------------------------------------------
+Plug 'skywind3000/asyncrun.vim'
+
+"----------------------------------------------------------------------
+" 编译运行 C/C++ 项目
+" 详细见：http://www.skywind.me/blog/archives/2084
+"----------------------------------------------------------------------
+
+" 自动打开 quickfix window ，高度为 6
+let g:asyncrun_open = 6
+
+" 任务结束时候响铃提醒
+let g:asyncrun_bell = 1
+
+" 设置 F10 打开/关闭 Quickfix 窗口
+nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
+
+" F9 编译 C/C++ 文件
+nnoremap <silent> <F9> :AsyncRun gcc -Wall -O2 "$(VIM_FILEPATH)" -o "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+
+" F5 运行文件
+nnoremap <silent> <F5> :call ExecuteFile()<cr>
+
+" F7 编译项目
+" nnoremap <silent> <F7> :AsyncRun -cwd=<root> make <cr>
+nnoremap <silent> <F7> :AsyncRun -cwd=<root> scons <cr>
+
+" F8 运行项目
+nnoremap <silent> <F8> :AsyncRun -cwd=<root> -raw make run <cr>
+
+" F6 测试项目
+nnoremap <silent> <F6> :AsyncRun -cwd=<root> -raw make test <cr>
+
+" 更新 cmake
+nnoremap <silent> <F4> :AsyncRun -cwd=<root> cmake . <cr>
+
+" Windows 下支持直接打开新 cmd 窗口运行
+if has('win32') || has('win64')
+	nnoremap <silent> <F8> :AsyncRun -cwd=<root> -mode=4 make run <cr>
+endif
+
+"----------------------------------------------------------------------
+" space + j : make
+"----------------------------------------------------------------------
+noremap <silent><space>jj  :AsyncRun -cwd=<root> make<cr>
+noremap <silent><space>jc  :AsyncRun -cwd=<root> make clean<cr>
+noremap <silent><space>jk  :AsyncRun -mode=4 -cwd=<root> make run<cr>
+noremap <silent><space>jl  :AsyncRun -mode=4 -cwd=<root> make test<cr>
+noremap <silent><space>j1  :AsyncRun -mode=4 -cwd=<root> make t1<cr>
+noremap <silent><space>j2  :AsyncRun -mode=4 -cwd=<root> make t2<cr>
+noremap <silent><space>j3  :AsyncRun -mode=4 -cwd=<root> make t3<cr>
+noremap <silent><space>j4  :AsyncRun -mode=4 -cwd=<root> make t4<cr>
+noremap <silent><space>j5  :AsyncRun -mode=4 -cwd=<root> make t5<cr>
+noremap <silent><space>k1  :AsyncRun -cwd=<root> make t1<cr>
+noremap <silent><space>k2  :AsyncRun -cwd=<root> make t2<cr>
+noremap <silent><space>k3  :AsyncRun -cwd=<root> make t3<cr>
+noremap <silent><space>k4  :AsyncRun -cwd=<root> make t4<cr>
+noremap <silent><space>k5  :AsyncRun -cwd=<root> make t5<cr>
+
+"----------------------------------------------------------------------
+" F5 运行当前文件：根据文件类型判断方法，并且输出到 quickfix 窗口
+"----------------------------------------------------------------------
+function! ExecuteFile()
+	let cmd = ''
+	if index(['c', 'cpp', 'rs', 'go'], &ft) >= 0
+		" native 语言，把当前文件名去掉扩展名后作为可执行运行
+		" 写全路径名是因为后面 -cwd=? 会改变运行时的当前路径，所以写全路径
+		" 加双引号是为了避免路径中包含空格
+		let cmd = '"$(VIM_FILEDIR)/$(VIM_FILENOEXT)"'
+	elseif &ft == 'python'
+		let $PYTHONUNBUFFERED=1 " 关闭 python 缓存，实时看到输出
+		let cmd = 'python "$(VIM_FILEPATH)"'
+	elseif &ft == 'javascript'
+		let cmd = 'node "$(VIM_FILEPATH)"'
+	elseif &ft == 'perl'
+		let cmd = 'perl "$(VIM_FILEPATH)"'
+	elseif &ft == 'ruby'
+		let cmd = 'ruby "$(VIM_FILEPATH)"'
+	elseif &ft == 'php'
+		let cmd = 'php "$(VIM_FILEPATH)"'
+	elseif &ft == 'lua'
+		let cmd = 'lua "$(VIM_FILEPATH)"'
+	elseif &ft == 'zsh'
+		let cmd = 'zsh "$(VIM_FILEPATH)"'
+	elseif &ft == 'ps1'
+		let cmd = 'powershell -file "$(VIM_FILEPATH)"'
+	elseif &ft == 'vbs'
+		let cmd = 'cscript -nologo "$(VIM_FILEPATH)"'
+	elseif &ft == 'sh'
+		let cmd = 'bash "$(VIM_FILEPATH)"'
+	else
+		return
+	endif
+	" Windows 下打开新的窗口 (-mode=4) 运行程序，其他系统在 quickfix 运行
+	" -raw: 输出内容直接显示到 quickfix window 不匹配 errorformat
+	" -save=2: 保存所有改动过的文件
+	" -cwd=$(VIM_FILEDIR): 运行初始化目录为文件所在目录
+	if has('win32') || has('win64')
+		exec 'AsyncRun -cwd=$(VIM_FILEDIR) -raw -save=2 -mode=4 '. cmd
+	else
+		exec 'AsyncRun -cwd=$(VIM_FILEDIR) -raw -save=2 -mode=0 '. cmd
+	endif
+endfunc
+
+
+
+"----------------------------------------------------------------------
+" F2 在项目目录下 Grep 光标下单词，默认 C/C++/Py/Js ，扩展名自己扩充
+" 支持 rg/grep/findstr ，其他类型可以自己扩充
+" 不是在当前目录 grep，而是会去到当前文件所属的项目目录 project root
+" 下面进行 grep，这样能方便的对相关项目进行搜索
+"----------------------------------------------------------------------
+if executable('rg')
+	noremap <silent><F2> :AsyncRun! -cwd=<root> rg -n --no-heading 
+				\ --color never -g *.h -g *.c* -g *.py -g *.js -g *.vim 
+				\ <C-R><C-W> "<root>" <cr>
+elseif has('win32') || has('win64')
+	noremap <silent><F2> :AsyncRun! -cwd=<root> findstr /n /s /C:"<C-R><C-W>" 
+				\ "\%CD\%\*.h" "\%CD\%\*.c*" "\%CD\%\*.py" "\%CD\%\*.js"
+				\ "\%CD\%\*.vim"
+				\ <cr>
+else
+	noremap <silent><F2> :AsyncRun! -cwd=<root> grep -n -s -R <C-R><C-W> 
+				\ --include='*.h' --include='*.c*' --include='*.py' 
+				\ --include='*.js' --include='*.vim'
+				\ '<root>' <cr>
+endif
+
+
+"----------------------------------------------------------------------
+" asynctasks
+"----------------------------------------------------------------------
+Plug 'skywind3000/asynctasks.vim'
+let s:config = (s:windows)? 'tasks.win32.ini' : 'tasks.linux.ini'
+let g:asynctasks_extra_config = [s:home . '/'. s:config]
+let g:asynctasks_term_pos = (s:windows && s:gui)? 'external' : 'tab'
+" let g:asynctasks_rtp_config = 'etc/tasks.ini'
+	noremap <silent><F5> :AsyncTask file-run<cr>
+	noremap <silent><F6> :AsyncTask make<cr>
+	noremap <silent><F7> :AsyncTask emake<cr>
+	noremap <silent><F8> :AsyncTask emake-exe<cr>
+	noremap <silent><F9> :AsyncTask file-build<cr>
+	noremap <silent><F10> :call asyncrun#quickfix_toggle(6)<cr>
+	noremap <silent><s-f5> :AsyncTask project-run<cr>
+	noremap <silent><s-f6> :AsyncTask project-test<cr>
+	noremap <silent><s-f7> :AsyncTask make<cr>
+	noremap <silent><s-f8> :AsyncTask make-run<cr>
+	noremap <silent><s-f9> :AsyncTask project-build<cr>
+
+	inoremap <silent><F5> <ESC>:AsyncTask file-run<cr>
+	inoremap <silent><F6> <ESC>:AsyncTask make<cr>
+	inoremap <silent><F7> <ESC>:AsyncTask emake<cr>
+	inoremap <silent><F8> <ESC>:AsyncTask emake-exe<cr>
+	inoremap <silent><F9> <ESC>:AsyncTask file-build<cr>
+	inoremap <silent><F10> <ESC>:call asyncrun#quickfix_toggle(6)<cr>
+	inoremap <silent><s-f5> <ESC>:AsyncTask project-run<cr>
+	inoremap <silent><s-f6> <ESC>:AsyncTask project-test<cr>
+	inoremap <silent><s-f7> <ESC>:AsyncTask make<cr>
+	inoremap <silent><s-f8> <ESC>:AsyncTask make-run<cr>
+	inoremap <silent><s-f9> <ESC>:AsyncTask project-build<cr>
+
+	noremap <silent><f1> :AsyncTask task-f1<cr>
+	noremap <silent><f2> :AsyncTask task-f2<cr>
+	noremap <silent><f3> :AsyncTask task-f3<cr>
+	noremap <silent><f4> :AsyncTask task-f4<cr>
+	inoremap <silent><f1> <ESC>:AsyncTask task-shift-f1<cr>
+	inoremap <silent><f2> <ESC>:AsyncTask task-shift-f2<cr>
+	inoremap <silent><f3> <ESC>:AsyncTask task-shift-f3<cr>
+	inoremap <silent><f4> <ESC>:AsyncTask task-shift-f4<cr>
 
 "----------------------------------------------------------------------
 " 结束插件安装
