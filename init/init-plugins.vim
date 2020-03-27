@@ -601,46 +601,34 @@ let g:asyncrun_bell = 1
 nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 
 " F9 编译 C/C++ 文件
-nnoremap <silent> <F9> :AsyncRun gcc -Wall -O2 "$(VIM_FILEPATH)" -o "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+" nnoremap <silent> <F9> :AsyncRun gcc -Wall -O2 "$(VIM_FILEPATH)" -o "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+noremap <silent><space>jk  :AsyncRun  gcc -Wall -O2 "$(VIM_FILEPATH)" -o "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 
 " F5 运行文件
-nnoremap <silent> <F5> :call ExecuteFile()<cr>
+" nnoremap <silent> <F5> :call ExecuteFile()<cr>
+noremap <silent><space>jr  :call ExecuteFile()<cr>
 
 " F7 编译项目
 " nnoremap <silent> <F7> :AsyncRun -cwd=<root> make <cr>
-nnoremap <silent> <F7> :AsyncRun -cwd=<root> scons <cr>
+noremap <silent><space>jj  :AsyncRun -cwd=<root> make<cr>
 
 " F8 运行项目
-nnoremap <silent> <F8> :AsyncRun -cwd=<root> -raw make run <cr>
+" nnoremap <silent> <F8> :AsyncRun -cwd=<root> -raw make run <cr>
+noremap <silent><space>jp  :AsyncRun -mode=4 -cwd=<root> make run<cr>
 
 " F6 测试项目
-nnoremap <silent> <F6> :AsyncRun -cwd=<root> -raw make test <cr>
+" nnoremap <silent> <F6> :AsyncRun -cwd=<root> -raw make test <cr>
+noremap <silent><space>jt  :AsyncRun -mode=4 -cwd=<root> make test<cr>
 
+noremap <silent><space>jc  :AsyncRun -cwd=<root> make clean<cr>
 " 更新 cmake
-nnoremap <silent> <F4> :AsyncRun -cwd=<root> cmake . <cr>
+" nnoremap <silent> <F4> :AsyncRun -cwd=<root> cmake . <cr>
+noremap <silent><space>ju  :AsyncRun -cwd=<root> cmake . <cr>
 
 " Windows 下支持直接打开新 cmd 窗口运行
 if has('win32') || has('win64')
 	nnoremap <silent> <F8> :AsyncRun -cwd=<root> -mode=4 make run <cr>
 endif
-
-"----------------------------------------------------------------------
-" space + j : make
-"----------------------------------------------------------------------
-noremap <silent><space>jj  :AsyncRun -cwd=<root> make<cr>
-noremap <silent><space>jc  :AsyncRun -cwd=<root> make clean<cr>
-noremap <silent><space>jk  :AsyncRun -mode=4 -cwd=<root> make run<cr>
-noremap <silent><space>jl  :AsyncRun -mode=4 -cwd=<root> make test<cr>
-noremap <silent><space>j1  :AsyncRun -mode=4 -cwd=<root> make t1<cr>
-noremap <silent><space>j2  :AsyncRun -mode=4 -cwd=<root> make t2<cr>
-noremap <silent><space>j3  :AsyncRun -mode=4 -cwd=<root> make t3<cr>
-noremap <silent><space>j4  :AsyncRun -mode=4 -cwd=<root> make t4<cr>
-noremap <silent><space>j5  :AsyncRun -mode=4 -cwd=<root> make t5<cr>
-noremap <silent><space>k1  :AsyncRun -cwd=<root> make t1<cr>
-noremap <silent><space>k2  :AsyncRun -cwd=<root> make t2<cr>
-noremap <silent><space>k3  :AsyncRun -cwd=<root> make t3<cr>
-noremap <silent><space>k4  :AsyncRun -cwd=<root> make t4<cr>
-noremap <silent><space>k5  :AsyncRun -cwd=<root> make t5<cr>
 
 "----------------------------------------------------------------------
 " F5 运行当前文件：根据文件类型判断方法，并且输出到 quickfix 窗口
@@ -716,42 +704,44 @@ endif
 " asynctasks
 "----------------------------------------------------------------------
 Plug 'skywind3000/asynctasks.vim'
+
+let s:windows = has('win32') || has('win64') || has('win95') || has('win16')
 let s:config = (s:windows)? 'tasks.win32.ini' : 'tasks.linux.ini'
 let g:asynctasks_extra_config = [s:home . '/'. s:config]
 let g:asynctasks_term_pos = (s:windows && s:gui)? 'external' : 'tab'
 " let g:asynctasks_rtp_config = 'etc/tasks.ini'
-	noremap <silent><F5> :AsyncTask file-run<cr>
-	noremap <silent><F6> :AsyncTask make<cr>
-	noremap <silent><F7> :AsyncTask emake<cr>
-	noremap <silent><F8> :AsyncTask emake-exe<cr>
-	noremap <silent><F9> :AsyncTask file-build<cr>
-	noremap <silent><F10> :call asyncrun#quickfix_toggle(6)<cr>
-	noremap <silent><s-f5> :AsyncTask project-run<cr>
-	noremap <silent><s-f6> :AsyncTask project-test<cr>
-	noremap <silent><s-f7> :AsyncTask make<cr>
-	noremap <silent><s-f8> :AsyncTask make-run<cr>
-	noremap <silent><s-f9> :AsyncTask project-build<cr>
+noremap <silent><F5> :AsyncTask file-run<cr>
+noremap <silent><F6> :AsyncTask make<cr>
+noremap <silent><F7> :AsyncTask emake<cr>
+noremap <silent><F8> :AsyncTask emake-exe<cr>
+noremap <silent><F9> :AsyncTask file-build<cr>
+noremap <silent><F10> :call asyncrun#quickfix_toggle(6)<cr>
+noremap <silent><s-f5> :AsyncTask project-run<cr>
+noremap <silent><s-f6> :AsyncTask project-test<cr>
+noremap <silent><s-f7> :AsyncTask make<cr>
+noremap <silent><s-f8> :AsyncTask make-run<cr>
+noremap <silent><s-f9> :AsyncTask project-build<cr>
 
-	inoremap <silent><F5> <ESC>:AsyncTask file-run<cr>
-	inoremap <silent><F6> <ESC>:AsyncTask make<cr>
-	inoremap <silent><F7> <ESC>:AsyncTask emake<cr>
-	inoremap <silent><F8> <ESC>:AsyncTask emake-exe<cr>
-	inoremap <silent><F9> <ESC>:AsyncTask file-build<cr>
-	inoremap <silent><F10> <ESC>:call asyncrun#quickfix_toggle(6)<cr>
-	inoremap <silent><s-f5> <ESC>:AsyncTask project-run<cr>
-	inoremap <silent><s-f6> <ESC>:AsyncTask project-test<cr>
-	inoremap <silent><s-f7> <ESC>:AsyncTask make<cr>
-	inoremap <silent><s-f8> <ESC>:AsyncTask make-run<cr>
-	inoremap <silent><s-f9> <ESC>:AsyncTask project-build<cr>
+inoremap <silent><F5> <ESC>:AsyncTask file-run<cr>
+inoremap <silent><F6> <ESC>:AsyncTask make<cr>
+inoremap <silent><F7> <ESC>:AsyncTask emake<cr>
+inoremap <silent><F8> <ESC>:AsyncTask emake-exe<cr>
+inoremap <silent><F9> <ESC>:AsyncTask file-build<cr>
+inoremap <silent><F10> <ESC>:call asyncrun#quickfix_toggle(6)<cr>
+inoremap <silent><s-f5> <ESC>:AsyncTask project-run<cr>
+inoremap <silent><s-f6> <ESC>:AsyncTask project-test<cr>
+inoremap <silent><s-f7> <ESC>:AsyncTask make<cr>
+inoremap <silent><s-f8> <ESC>:AsyncTask make-run<cr>
+inoremap <silent><s-f9> <ESC>:AsyncTask project-build<cr>
 
-	noremap <silent><f1> :AsyncTask task-f1<cr>
-	noremap <silent><f2> :AsyncTask task-f2<cr>
-	noremap <silent><f3> :AsyncTask task-f3<cr>
-	noremap <silent><f4> :AsyncTask task-f4<cr>
-	inoremap <silent><f1> <ESC>:AsyncTask task-shift-f1<cr>
-	inoremap <silent><f2> <ESC>:AsyncTask task-shift-f2<cr>
-	inoremap <silent><f3> <ESC>:AsyncTask task-shift-f3<cr>
-	inoremap <silent><f4> <ESC>:AsyncTask task-shift-f4<cr>
+noremap <silent><f1> :AsyncTask task-f1<cr>
+noremap <silent><f2> :AsyncTask task-f2<cr>
+noremap <silent><f3> :AsyncTask task-f3<cr>
+noremap <silent><f4> :AsyncTask task-f4<cr>
+inoremap <silent><f1> <ESC>:AsyncTask task-shift-f1<cr>
+inoremap <silent><f2> <ESC>:AsyncTask task-shift-f2<cr>
+inoremap <silent><f3> <ESC>:AsyncTask task-shift-f3<cr>
+inoremap <silent><f4> <ESC>:AsyncTask task-shift-f4<cr>
 
 "----------------------------------------------------------------------
 " 结束插件安装
