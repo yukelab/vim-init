@@ -355,10 +355,10 @@ if index(g:bundle_group, 'nerdtree') >= 0
 	let g:NERDTreeDirArrows = 1
 	let g:NERDTreeHijackNetrw = 0
 
-	noremap <space>tn :NERDTree<cr>
-	noremap <space>to :NERDTreeFocus<cr>
-	noremap <space>tm :NERDTreeMirror<cr>
-	noremap <space>tt :NERDTreeToggle<cr>
+	noremap <space>nn :NERDTree<cr>
+	noremap <space>no :NERDTreeFocus<cr>
+	noremap <space>nm :NERDTreeMirror<cr>
+	noremap <space>nt :NERDTreeToggle<cr>
 
 	"只剩 NERDTree时自动关闭
 	autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
