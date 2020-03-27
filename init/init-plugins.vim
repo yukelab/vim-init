@@ -708,7 +708,7 @@ Plug 'skywind3000/asynctasks.vim'
 let s:windows = has('win32') || has('win64') || has('win95') || has('win16')
 let s:config = (s:windows)? 'tasks.win32.ini' : 'tasks.linux.ini'
 let g:asynctasks_extra_config = [s:home . '/'. s:config]
-let g:asynctasks_term_pos = (s:windows && s:gui)? 'external' : 'tab'
+let g:asynctasks_term_pos = (s:windows && s:gui)? 'external' : 'top'
 " let g:asynctasks_rtp_config = 'etc/tasks.ini'
 noremap <silent><F5> :AsyncTask file-run<cr>
 noremap <silent><F6> :AsyncTask make<cr>
