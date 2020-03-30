@@ -708,7 +708,8 @@ Plug 'skywind3000/asynctasks.vim'
 let s:windows = has('win32') || has('win64') || has('win95') || has('win16')
 let s:config = (s:windows)? 'tasks.win32.ini' : 'tasks.linux.ini'
 let g:asynctasks_extra_config = [s:home . '/'. s:config]
-let g:asynctasks_term_pos = (s:windows && s:gui)? 'external' : 'top'
+" let g:asynctasks_term_pos = (s:windows && s:gui)? 'external' : 'top'
+let g:asynctasks_term_pos = 'top'
 " let g:asynctasks_rtp_config = 'etc/tasks.ini'
 noremap <silent><F5> :AsyncTask file-run<cr>
 noremap <silent><F6> :AsyncTask make<cr>
@@ -778,12 +779,14 @@ let g:ycm_semantic_triggers =  {
 "----------------------------------------------------------------------
 " Ycm 白名单（非名单内文件不启用 YCM），避免打开个 1MB 的 txt 分析半天
 "----------------------------------------------------------------------
+let g:ycm_filetype_blacklist = {
+			\ "python":1,
+			\}
 let g:ycm_filetype_whitelist = {
 			\ "c":1,
 			\ "cpp":1,
 			\ "objc":1,
 			\ "objcpp":1,
-			\ "python":1,
 			\ "java":1,
 			\ "javascript":1,
 			\ "coffee":1,

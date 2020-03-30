@@ -67,7 +67,7 @@ color desert
 " color solarized
 
 set colorcolumn=80
-hi ColorColumn ctermbg=darkgrey
+hi ColorColumn ctermbg=darkgrey guibg=darkgray
 hi CursorLine ctermbg=darkgrey
 
 "----------------------------------------------------------------------
