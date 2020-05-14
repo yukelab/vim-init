@@ -206,3 +206,21 @@ function! SetColorColumn()
 	endif
 endfunction
 
+"*****************************************************
+"                   ubuntu using wmctrl f11 ctrl                      *
+"*****************************************************
+" sudo apt-get install wmctrl
+let g:fullscreen = 0
+function! ToggleFullscreen()
+	if g:fullscreen == 1
+		let g:fullscreen = 0
+		let mod = "remove"
+	else
+		let g:fullscreen = 1
+		let mod = "add"
+	endif
+	call system("wmctrl -ir " . v:windowid . " -b " . mod . ",fullscreen")
+endfunction
+
+map <silent> <F11> :call ToggleFullscreen()<CR>
+
