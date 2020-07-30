@@ -197,6 +197,8 @@ if index(g:bundle_group, 'enhanced') >= 0
 	" let g:indent_guides_guide_size=1
 	" indent guide does not work for c, sometimes
 	Plug 'Yggdroot/indentLine'
+	let g:indentLine_color_gui = '#a9a9a9'
+	let g:indentLine_showFirstIndentLevel = -1
 
 	"me: doxgen
 	Plug 'vim-scripts/DoxygenToolkit.vim'
