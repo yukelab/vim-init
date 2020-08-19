@@ -46,7 +46,7 @@ Plug 'easymotion/vim-easymotion'
 
 " 文件浏览器，代替 netrw
 " cause error for IMproved 8.2 (2019 Dec 12, compiled Jul 27 2020 10:37:52)
-" Plug 'justinmk/vim-dirvish'
+Plug 'justinmk/vim-dirvish'
 
 " 表格对齐，使用命令 Tabularize
 Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
@@ -72,31 +72,31 @@ Plug 'chrisbra/vim-diff-enhanced'
 " 这个排序函数可以将目录排在前面，文件排在后面，并且按照字母顺序排序
 " 比默认的纯按照字母排序更友好点。
 "----------------------------------------------------------------------
-" function! s:setup_dirvish()
-" 	if &buftype != 'nofile' && &filetype != 'dirvish'
-" 		return
-" 	endif
-" 	if has('nvim')
-" 		return
-" 	endif
-" 	" 取得光标所在行的文本（当前选中的文件名）
-" 	let text = getline('.')
-" 	if ! get(g:, 'dirvish_hide_visible', 0)
-" 		exec 'silent keeppatterns g@\v[\/]\.[^\/]+[\/]?$@d _'
-" 	endif
-" 	" 排序文件名
-" 	exec 'sort ,^.*[\/],'
-" 	let name = '^' . escape(text, '.*[]~\') . '[/*|@=|\\*]\=\%($\|\s\+\)'
-" 	" 定位到之前光标处的文件
-" 	call search(name, 'wc')
-" 	noremap <silent><buffer> ~ :Dirvish ~<cr>
-" 	noremap <buffer> % :e %
-" endfunc
+function! s:setup_dirvish()
+	if &buftype != 'nofile' && &filetype != 'dirvish'
+		return
+	endif
+	if has('nvim')
+		return
+	endif
+	" 取得光标所在行的文本（当前选中的文件名）
+	let text = getline('.')
+	if ! get(g:, 'dirvish_hide_visible', 0)
+		exec 'silent keeppatterns g@\v[\/]\.[^\/]+[\/]?$@d _'
+	endif
+	" 排序文件名
+	exec 'sort ,^.*[\/],'
+	let name = '^' . escape(text, '.*[]~\') . '[/*|@=|\\*]\=\%($\|\s\+\)'
+	" 定位到之前光标处的文件
+	call search(name, 'wc')
+	noremap <silent><buffer> ~ :Dirvish ~<cr>
+	noremap <buffer> % :e %
+endfunc
 
-" augroup MyPluginSetup
-" 	autocmd!
-" 	autocmd FileType dirvish call s:setup_dirvish()
-" augroup END
+augroup MyPluginSetup
+	autocmd!
+	autocmd FileType dirvish call s:setup_dirvish()
+augroup END
 
 
 "----------------------------------------------------------------------
@@ -183,8 +183,10 @@ if index(g:bundle_group, 'enhanced') >= 0
 
 	" 配对括号和引号自动补全
 	" cause error for IMproved 8.2 (2019 Dec 12, compiled Jul 27 2020 10:37:52)
-	" Plug 'Raimondi/delimitMate'
+	Plug 'Raimondi/delimitMate'
 
+	Plug 'SirVer/ultisnips'
+	Plug 'honza/vim-snippets'
 	" 提供 gist 接口
 	" Plug 'lambdalisue/vim-gista', { 'on': 'Gista' }
 
