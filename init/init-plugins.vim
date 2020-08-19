@@ -187,6 +187,15 @@ if index(g:bundle_group, 'enhanced') >= 0
 
 	Plug 'SirVer/ultisnips'
 	Plug 'honza/vim-snippets'
+	Plug 'ervandew/supertab'
+	let g:SuperTabDefaultCompletionType = '<C-n>'
+	 
+	" make YCM compatible with UltiSnips (using supertab)
+	" better key bindings for UltiSnipsExpandTrigger
+	let g:UltiSnipsExpandTrigger = "<tab>"
+	let g:UltiSnipsJumpForwardTrigger = "<tab>"
+	let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
 	" 提供 gist 接口
 	" Plug 'lambdalisue/vim-gista', { 'on': 'Gista' }
 
@@ -773,6 +782,13 @@ let g:ycm_min_num_identifier_candidate_chars = 2
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_strings=1
 let g:ycm_key_invoke_completion = '<c-z>'
+
+" make YCM compatible with UltiSnips (using supertab)
+" UltiSnips and YouCompleteMe
+" https://stackoverflow.com/questions/14896327/ultisnips-and-youcompleteme
+let g:ycm_key_list_select_completion = ['<C-n>','<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>','<Up>']
+
 set completeopt=menu,menuone,noselect
 
 " noremap <c-z> <NOP>
