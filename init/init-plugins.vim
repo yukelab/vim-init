@@ -15,7 +15,8 @@
 "----------------------------------------------------------------------
 if !exists('g:bundle_group')
 	let g:bundle_group = ['basic', 'tags', 'enhanced', 'filetypes', 'textobj']
-	let g:bundle_group += ['tags', 'airline', 'nerdtree', 'ale', 'echodoc']
+	" let g:bundle_group += ['tags', 'airline', 'nerdtree', 'ale', 'echodoc']
+	let g:bundle_group += ['tags', 'airline', 'nerdtree', 'echodoc']
 	let g:bundle_group += ['leaderf']
 endif
 
@@ -185,6 +186,8 @@ if index(g:bundle_group, 'enhanced') >= 0
 	" cause error for IMproved 8.2 (2019 Dec 12, compiled Jul 27 2020 10:37:52)
 	Plug 'Raimondi/delimitMate'
 
+	Plug 'vim-scripts/a.vim'
+
 	Plug 'SirVer/ultisnips'
 	Plug 'honza/vim-snippets'
 	Plug 'ervandew/supertab'
@@ -227,6 +230,7 @@ if index(g:bundle_group, 'enhanced') >= 0
 	let g:DoxygenToolkit_authorTag = "\\author "
 	let g:doxygen_enhanced_color = 1
 
+	Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 endif
 
 
@@ -416,6 +420,12 @@ if index(g:bundle_group, 'ale') >= 0
 	let g:ale_lint_on_text_changed = 'normal'
 	let g:ale_lint_on_insert_leave = 1
 
+    let g:ale_sign_error = "\ue009\ue009"
+    hi! clear SpellBad
+    hi! clear SpellCap
+    hi! clear SpellRare
+    hi! SpellBad gui=undercurl guisp=red
+
 	" 在 linux/mac 下降低语法检查程序的进程优先级（不要卡到前台进程）
 	if has('win32') == 0 && has('win64') == 0 && has('win32unix') == 0
 		let g:ale_command_wrapper = 'nice -n5'
@@ -527,6 +537,12 @@ if index(g:bundle_group, 'leaderf') >= 0
 
 		" 显示绝对路径
 		let g:Lf_ShowRelativePath = 0
+
+		let g:Lf_ShowDevIcons = 1
+		" For GUI vim, the icon font can be specify like this, for example
+		let g:Lf_DevIconsFont = "DroidSansMono Nerd Font Mono"
+		" If needs
+		" set ambiwidth=double
 
 		" 隐藏帮助
 		let g:Lf_HideHelp = 1
@@ -776,12 +792,23 @@ call plug#end()
 let g:ycm_add_preview_to_completeopt = 0
 
 " 禁用诊断功能：我们用前面更好用的 ALE 代替
-let g:ycm_show_diagnostics_ui = 0
+let g:ycm_show_diagnostics_ui = 1
 let g:ycm_server_log_level = 'info'
 let g:ycm_min_num_identifier_candidate_chars = 2
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_strings=1
 let g:ycm_key_invoke_completion = '<c-z>'
+let g:ycm_global_ycm_extra_config='~/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf=0
+
+" 语法关键字补全
+let g:ycm_seed_identifiers_with_syntax = 1
+" 开启 YCM 基于标签引擎
+let g:ycm_collect_identifiers_from_tags_files = 1
+" 从第2个键入字符就开始罗列匹配项
+let g:ycm_min_num_of_chars_for_completion=2
+" 在注释输入中也能补全
+let g:ycm_complete_in_comments=1
 
 " make YCM compatible with UltiSnips (using supertab)
 " UltiSnips and YouCompleteMe
