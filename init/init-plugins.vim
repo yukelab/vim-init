@@ -230,7 +230,7 @@ if index(g:bundle_group, 'enhanced') >= 0
 	let g:DoxygenToolkit_authorTag = "\\author "
 	let g:doxygen_enhanced_color = 1
 
-	Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
+	" Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 endif
 
 
@@ -280,8 +280,8 @@ if index(g:bundle_group, 'tags') >= 0
 	" 禁止 gutentags 自动链接 gtags 数据库
 	let g:gutentags_auto_add_gtags_cscope = 0
 
-	Plug 'majutsushi/tagbar'
-	noremap <space>tt :TagbarToggle<cr>
+	" Plug 'majutsushi/tagbar'
+	" noremap <space>tt :TagbarToggle<cr>
 
 endif
 
@@ -357,11 +357,19 @@ if index(g:bundle_group, 'airline') >= 0
 	let g:airline_section_b = '%n'
 	let g:airline_theme='tomorrow'
 	let g:airline#extensions#tarbar#enabled = 1
-	let g:airline#extensions#branch#enabled = 0
+	let g:airline#extensions#branch#enabled = 1
 	let g:airline#extensions#syntastic#enabled = 0
-	let g:airline#extensions#fugitiveline#enabled = 0
+	let g:airline#extensions#fugitiveline#enabled = 1
 	let g:airline#extensions#csv#enabled = 0
 	let g:airline#extensions#vimagit#enabled = 0
+
+	let g:airline#extensions#tabline#enabled = 1
+" * set error count prefix >
+	let g:airline#extensions#ycm#enabled = 1
+" * set error count prefix >
+	let g:airline#extensions#ycm#error_symbol = 'E:'
+" * set warning count prefix >
+	let g:airline#extensions#ycm#warning_symbol = 'W:'
 
 endif
 
