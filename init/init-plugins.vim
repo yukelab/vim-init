@@ -48,7 +48,10 @@ Plug 'easymotion/vim-easymotion'
 " 文件浏览器，代替 netrw
 " cause error for IMproved 8.2 (2019 Dec 12, compiled Jul 27 2020 10:37:52)
 Plug 'justinmk/vim-dirvish'
-Plug 'kristijanhusak/vim-dirvish-git'
+if has("linux")
+	" vim-dirvish-git cause vim crash in windows
+	Plug 'kristijanhusak/vim-dirvish-git'
+endif
 
 " 表格对齐，使用命令 Tabularize
 Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
