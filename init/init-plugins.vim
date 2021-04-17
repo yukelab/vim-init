@@ -233,7 +233,7 @@ if index(g:bundle_group, 'enhanced') >= 0
 	let g:DoxygenToolkit_dateTag = "\\date "
 	let g:DoxygenToolkit_authorTag = "\\author "
 	let g:doxygen_enhanced_color = 1
-
+	Plug 'terryma/vim-multiple-cursors'
 	" Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 endif
 
@@ -552,7 +552,7 @@ if index(g:bundle_group, 'leaderf') >= 0
 
 		let g:Lf_ShowDevIcons = 1
 		" For GUI vim, the icon font can be specify like this, for example
-		let g:Lf_DevIconsFont = "DroidSansMono Nerd Font Mono"
+		let g:Lf_DevIconsFont = "DroidSansMono Nerd Font"
 		" If needs
 		" set ambiwidth=double
 
